@@ -17,6 +17,9 @@
       "XWALK_MODE": "embedded",
       "XWALK_MULTIPLEAPK": "true",
       "PACKAGE_NAME": "tristar.app.oficial"
+    },
+    "cordova-plugin-sqlite-2": {
+      "PACKAGE_NAME": "tristar.app.oficial"
     }
   },
   "dependent_plugins": {}

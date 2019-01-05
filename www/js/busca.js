@@ -1,4 +1,4 @@
-var db = new PouchDB('itens');
+//var db = new PouchDB('itens');
 var inputBusca = document.getElementById('inputBusca');
 let btnBusca = document.getElementById('btn-busca');
 var inputVal;
@@ -7,15 +7,13 @@ var reloadAux = 0;
 
 btnBusca.addEventListener('click', function () {
     inputVal = inputBusca.value;
-    console.log('inputVal');
     if (inputBusca.value == '') {
         alert('Digite algo para buscar');
     }
     else {
-        
         reloadAux++;
         reload();
-        console.log(reloadAux);
+        console.log(inputVal);
         redirect(inputVal);
     }
 });
@@ -82,10 +80,10 @@ function pegaBusca() {
 function reload() {
     if (reloadAux > 1) {
         location.reload();
-        console.log('recarregando');
         pegaBusca();
     }
 }
 
 window.onload = pegaBusca();
+body.onload = sync(); 
 reload();

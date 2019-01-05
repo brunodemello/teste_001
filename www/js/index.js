@@ -20,19 +20,14 @@ var idupButton = document.getElementById('idupButton');
 var idupInput = document.getElementById('idupInput');
 var id_img;
 
-db.info().then(function(info){
-    console.log(info);
-});
-
-// db.changes({
-//     since: 'now',
-//     live: true
-// }).on('change', recuperaItem);
+// db.info().then(function(info){
+//     console.log(info);
+// });
 
 db.changes({
     since: 'now',
     live: true
-}).on('change', console.log('porra'));
+}).on('change', mostraItens);
 
 
 addButton.addEventListener('click', function (e) {
@@ -99,33 +94,37 @@ function syncError() {
     console.log('Fodeu');
 }
 
-// function mostraItens() {
-//     db.allDocs({ include_docs: true, attachments: true, descending: true }, function (err, item) {
-//         console.log(item.rows);
-//         redrawTodosUI(item.rows);
-//     });
-// };
+function mostraItens() {
+    if (document.title = 'admin') {
+        db.allDocs({ include_docs: true, attachments: true, descending: true }, function (err, item) {
+            //console.log(item.rows);
+            redrawTodosUI(item.rows);
+        });
+    } else {
+        console.log('mostraItensChamado');
+    }
+};
 
-// function redrawTodosUI(itens) {
-//     var ul = document.getElementById('todo-list');
-//     ul.innerHTML = '';
-//     itens.forEach(function (row) {
-//         // console.log(row.doc.name);
-//         var li = document.createElement("LI");
-//         var txt = document.createTextNode("Nome: " + row.doc.name + " categoria: " + row.doc.categoria + " ID: " + row.doc._id);
-//         li.appendChild(txt);
-//         ul.appendChild(li);
-//         li.className = "list-group-item bg-secondary";
-//     })
+function redrawTodosUI(itens) {
+    var ul = document.getElementById('todo-list');
+    ul.innerHTML = '';
+    itens.forEach(function (row) {
+        // console.log(row.doc.name);
+        var li = document.createElement("LI");
+        var txt = document.createTextNode("Nome: " + row.doc.name + " categoria: " + row.doc.categoria + " ID: " + row.doc._id);
+        li.appendChild(txt);
+        ul.appendChild(li);
+        li.className = "list-group-item bg-secondary";
+    })
 
 
 
-// }
+}
 
-// buttonSearch.addEventListener('click', function (e) {
-//     filtraItens(searchInput.value);
-//     console.log('Click funcionando');
-// });
+buttonSearch.addEventListener('click', function (e) {
+    filtraItens(searchInput.value);
+    console.log('Click funcionando');
+});
 
 // function filtraItens(busca) {
 //     db.allDocs({ include_docs: true, descending: true }, function (err, item) {
@@ -167,56 +166,56 @@ function syncError() {
 //     li.className = `list-group-item ${back_color}`;
 // }
 
-// if (remoteCouch) {
-//     sync();
-// }
+if (remoteCouch) {
+    sync();
+}
 
-// mostraItens();
+mostraItens();
 
-idupButton.addEventListener('click', function(){
+idupButton.addEventListener('click', function () {
     id_img = idupInput.value;
     console.log(id_img);
     document.getElementById('upload-img').classList.remove("upload-img");
 })
 
 //Upando e salvando imagens
-    input.addEventListener('change', function () {
-        var file = input.files[0]; // file is a Blob
-        console.log('aqui');
-        console.log(file);
-        db.put({
-            _id: id_img,
-            _attachments: {
-                filename: {
-                    content_type: file.type,
-                    data: file
-                }
+input.addEventListener('change', function () {
+    var file = input.files[0]; // file is a Blob
+    console.log('aqui');
+    console.log(file);
+    db.put({
+        _id: id_img,
+        _attachments: {
+            filename: {
+                content_type: file.type,
+                data: file
             }
-        }).catch(function (err) {
-            if (err.status = 409) {
-                db.get(id_img).then(function (item) {
-                    // update
-                    item._attachments = {
-                        filename: {
-                            content_type: file.type,
-                            data: file
-                        }
+        }
+    }).catch(function (err) {
+        if (err.status = 409) {
+            db.get(id_img).then(function (item) {
+                // update
+                item._attachments = {
+                    filename: {
+                        content_type: file.type,
+                        data: file
                     }
-                    console.log("aqui porra");
-                    // put them back
-                    return db.put(item);
-                }).then(function () {
-                    // fetch mittens again
-                    return db.get(id_img);
-                }).then(function (item) {
-                    console.log('sucesso');
-                    mostraImg(id_img, false);
-                });
-            }
-        });
-
-        console.log('teste de posição');
+                }
+                console.log("aqui porra");
+                // put them back
+                return db.put(item);
+            }).then(function () {
+                // fetch mittens again
+                return db.get(id_img);
+            }).then(function (item) {
+                console.log('sucesso');
+                mostraImg(id_img, false);
+            });
+        }
     });
+
+    console.log('teste de posição');
+});
 
 
 // function mostraImg(id, item) {
@@ -250,21 +249,20 @@ function deletaItem(id) {
     });
 }
 
-// function recuperaItem() {
-//     db.allDocs({ include_docs: true, attachments: true, descending: true }, function (err, item) {
-//         item.rows.forEach(function (row) {
-//             // if (row.doc._id == id) {
-//             //     //console.log(row.doc.descricao);
-//             //     item = row.doc;
-//             //     mostraImg(id, item);
-//             // }
-//             item = row.doc;
-//             id = row.doc._id;
-//             console.log(item);
-//             //mostraImg(id, item);
-//         })
-//     });
-// }
+function recuperaItem() {
+    db.allDocs({ include_docs: true, attachments: true, descending: true }, function (err, item) {
+        item.rows.forEach(function (row) {
+            // if (row.doc._id == id) {
+            //     //console.log(row.doc.descricao);
+            //     item = row.doc;
+            //     mostraImg(id, item);
+            // }
+            item = row.doc;
+            id = row.doc._id;
+            mostraImg(id, item);
+        })
+    });
+}
 //   function myDeltaFunction(doc) {
 //     doc.counter = doc.counter || 0;
 //     doc.counter++;
@@ -278,7 +276,7 @@ function deletaItem(id) {
 //   });
 
 
-//recuperaItem();
+recuperaItem();
 
 
 
