@@ -3,6 +3,7 @@ let tituloCategoria = document.getElementById('titulo-categoria');
 categoria = tituloCategoria.innerText.toLocaleLowerCase();
 
 
+
 function recuperaItemCategoria() {
     db.allDocs({ include_docs: true, attachments: true, descending: true }, function (err, item) {
         item.rows.forEach(function (row) {
@@ -45,6 +46,9 @@ function mostraImg(id, item) {
     });
 }
 
-
+if (remoteCouch) {
+    sync();
+    console.log('sincronizando');
+}
 
 recuperaItemCategoria();

@@ -20,14 +20,19 @@ var idupButton = document.getElementById('idupButton');
 var idupInput = document.getElementById('idupInput');
 var id_img;
 
-// db.info().then(function(info){
-//     console.log(info);
-// });
+db.info().then(function(info){
+    console.log(info);
+});
+
+// db.changes({
+//     since: 'now',
+//     live: true
+// }).on('change', recuperaItem);
 
 db.changes({
     since: 'now',
     live: true
-}).on('change', mostraItens);
+}).on('change', console.log('porra'));
 
 
 addButton.addEventListener('click', function (e) {
@@ -94,33 +99,33 @@ function syncError() {
     console.log('Fodeu');
 }
 
-function mostraItens() {
-    db.allDocs({ include_docs: true, attachments: true, descending: true }, function (err, item) {
-        console.log(item.rows);
-        redrawTodosUI(item.rows);
-    });
-};
+// function mostraItens() {
+//     db.allDocs({ include_docs: true, attachments: true, descending: true }, function (err, item) {
+//         console.log(item.rows);
+//         redrawTodosUI(item.rows);
+//     });
+// };
 
-function redrawTodosUI(itens) {
-    var ul = document.getElementById('todo-list');
-    ul.innerHTML = '';
-    itens.forEach(function (row) {
-        // console.log(row.doc.name);
-        var li = document.createElement("LI");
-        var txt = document.createTextNode("Nome: " + row.doc.name + " categoria: " + row.doc.categoria + " ID: " + row.doc._id);
-        li.appendChild(txt);
-        ul.appendChild(li);
-        li.className = "list-group-item bg-secondary";
-    })
+// function redrawTodosUI(itens) {
+//     var ul = document.getElementById('todo-list');
+//     ul.innerHTML = '';
+//     itens.forEach(function (row) {
+//         // console.log(row.doc.name);
+//         var li = document.createElement("LI");
+//         var txt = document.createTextNode("Nome: " + row.doc.name + " categoria: " + row.doc.categoria + " ID: " + row.doc._id);
+//         li.appendChild(txt);
+//         ul.appendChild(li);
+//         li.className = "list-group-item bg-secondary";
+//     })
 
 
 
-}
+// }
 
-buttonSearch.addEventListener('click', function (e) {
-    filtraItens(searchInput.value);
-    console.log('Click funcionando');
-});
+// buttonSearch.addEventListener('click', function (e) {
+//     filtraItens(searchInput.value);
+//     console.log('Click funcionando');
+// });
 
 // function filtraItens(busca) {
 //     db.allDocs({ include_docs: true, descending: true }, function (err, item) {
@@ -162,11 +167,11 @@ buttonSearch.addEventListener('click', function (e) {
 //     li.className = `list-group-item ${back_color}`;
 // }
 
-if (remoteCouch) {
-    sync();
-}
+// if (remoteCouch) {
+//     sync();
+// }
 
-mostraItens();
+// mostraItens();
 
 idupButton.addEventListener('click', function(){
     id_img = idupInput.value;
@@ -245,20 +250,21 @@ function deletaItem(id) {
     });
 }
 
-function recuperaItem() {
-    db.allDocs({ include_docs: true, attachments: true, descending: true }, function (err, item) {
-        item.rows.forEach(function (row) {
-            // if (row.doc._id == id) {
-            //     //console.log(row.doc.descricao);
-            //     item = row.doc;
-            //     mostraImg(id, item);
-            // }
-            item = row.doc;
-            id = row.doc._id;
-            mostraImg(id, item);
-        })
-    });
-}
+// function recuperaItem() {
+//     db.allDocs({ include_docs: true, attachments: true, descending: true }, function (err, item) {
+//         item.rows.forEach(function (row) {
+//             // if (row.doc._id == id) {
+//             //     //console.log(row.doc.descricao);
+//             //     item = row.doc;
+//             //     mostraImg(id, item);
+//             // }
+//             item = row.doc;
+//             id = row.doc._id;
+//             console.log(item);
+//             //mostraImg(id, item);
+//         })
+//     });
+// }
 //   function myDeltaFunction(doc) {
 //     doc.counter = doc.counter || 0;
 //     doc.counter++;
@@ -272,7 +278,7 @@ function recuperaItem() {
 //   });
 
 
-recuperaItem();
+//recuperaItem();
 
 
 
